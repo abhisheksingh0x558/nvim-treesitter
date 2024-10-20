@@ -41,20 +41,20 @@
   "in" @keyword)
 
 (overlay_list
-  "list" @keyword.storage.modifier)
+  "list" @keyword.import)
 
 (overlay_hide
-  "hide" @keyword.storage.modifier)
+  "hide" @keyword.import)
 
 (overlay_new
-  "new" @keyword.storage.modifier)
+  "new" @keyword.import)
 
 (overlay_use
-  "use" @keyword.storage.modifier
+  "use" @keyword.import
   "as" @keyword)
 
 (ctrl_error
-  "make" @keyword.storage.modifier)
+  "make" @keyword.import)
 
 ; ---
 ; literals
@@ -72,12 +72,10 @@
     "0o"
     "0x"
   ] @number
-  "[" @punctuation.bracket
   digit: [
     "," @punctuation.delimiter
     (hex_digit) @number
-  ]
-  "]" @punctuation.bracket) @number
+  ]) @number
 
 (val_bool) @constant.builtin
 
@@ -91,16 +89,15 @@ file_path: (val_string) @variable.parameter
 
 (val_date) @number
 
-(inter_escape_sequence) @constant.character.escape
+(inter_escape_sequence) @string.escape
 
-(escape_sequence) @constant.character.escape
+(escape_sequence) @string.escape
 
 (val_interpolated
   [
     "$\""
     "$\'"
     "\""
-    "\'"
   ] @string)
 
 (unescaped_interpolated_content) @string
@@ -224,7 +221,7 @@ file_path: (val_string) @variable.parameter
 [
   ","
   ";"
-] @punctuation.special
+] @punctuation.delimiter
 
 (param_long_flag
   "--" @punctuation.delimiter)
@@ -239,7 +236,7 @@ file_path: (val_string) @variable.parameter
   "-" @punctuation.delimiter)
 
 (long_flag_equals_value
-  "=" @punctuation.special)
+  "=" @punctuation.delimiter)
 
 (param_short_flag
   "-" @punctuation.delimiter)
@@ -248,19 +245,19 @@ file_path: (val_string) @variable.parameter
   "..." @punctuation.delimiter)
 
 (param_type
-  ":" @punctuation.special)
+  ":" @punctuation.delimiter)
 
 (param_value
-  "=" @punctuation.special)
+  "=" @punctuation.delimiter)
 
 (param_cmd
-  "@" @punctuation.special)
+  "@" @punctuation.delimiter)
 
 (param_opt
-  "?" @punctuation.special)
+  "?" @punctuation.delimiter)
 
 (returns
-  "->" @punctuation.special)
+  "->" @punctuation.delimiter)
 
 [
   "("
@@ -353,8 +350,8 @@ key: (identifier) @property
   "$" @punctuation.special
   [
     (identifier) @variable
-    "in" @special
-    "nu" @namespace
+    "in" @variable.parameter.builtin
+    "nu" @module
     "env" @constant
   ]) @none
 
@@ -366,7 +363,7 @@ key: (identifier) @property
 (flat_type) @type
 
 (list_type
-  "list" @type.enum
+  "list" @type.builtin
   [
     "<"
     ">"
@@ -376,7 +373,7 @@ key: (identifier) @property
   [
     "record"
     "table"
-  ] @type.enum
+  ] @type.builtin
   "<" @punctuation.bracket
   key: (_) @variable.parameter
   [
